@@ -31,3 +31,5 @@ Route::get('getIdByHeadquarters/{name?}', [DeviceController::class, 'getIdByHead
 
 //POST REQUESTS
 Route::post('company-search', [DeviceController::class, 'addData']);
+
+//test push to origin
