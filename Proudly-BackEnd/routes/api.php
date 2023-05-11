@@ -36,6 +36,6 @@ Route::get('getCompanyLeadsBySearchId/{user_id?}', [DeviceController::class, 'ge
 Route::get('getPeopleLeadsBySearchId/{user_id?}', [DeviceController::class, 'getPeopleLeadsBySearchId']);
 
 //POST REQUESTS
-Route::post('company-search', [DeviceController::class, 'addData']);
+Route::post('postUser', [DeviceController::class, 'postUser']);
 
 //test push to origin

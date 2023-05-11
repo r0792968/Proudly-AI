@@ -18,6 +18,12 @@ use App\Models\users;
 class DeviceController extends Controller
 {
     // GET REQUESTS
+    public function getUser($mail,$password){
+        $password = hash("sha256",$password);
+        $data = users::where('mail', $mail)->where('password', $password)->first();
+        return response()->json($data);}
+
+
     public function getIdByIndustry($name = null)
     {
         if ($name) {
@@ -146,51 +152,53 @@ class DeviceController extends Controller
         return response()->json(['message' => 'Data added successfully']);
     }
 
-    // public function newPeopleLead(Request $request){
+    public function newPeopleLead(Request $request){
             
-    //         $search_id = $request->input('search_id');
-    //         $full_name = $request->input('full_name');
-    //         $people_linkedin_url = $request->input('people_linkedin_url');
-    //         $people_job_title = $request->input('people_job_title');
-    //         $people_job_function = $request->input('people_job_function');
-    //         $people_job_seniority = $request->input('people_job_seniority');
-    //         $people_job_location = $request->input('people_job_location');
-    //         $people_company_name = $request->input('people_company_name');
-    //         $people_company_linkedin_url = $request->input('people_company_linkedin_url');
-    //         $people_company_website = $request->input('people_company_website');
-    //         $people_company_industry = $request->input('people_company_industry');
-    //         $people_company_headquarter_location = $request->input('people_company_headquarter_location');
-    //         $people_company_headcount = $request->input('people_company_headcount');
+            $search_id = $request->input('search_id');
+            $full_name = $request->input('full_name');
+            $people_linkedin_url = $request->input('people_linkedin_url');
+            $people_job_title = $request->input('people_job_title');
+            $people_job_function = $request->input('people_job_function');
+            $people_job_seniority = $request->input('people_job_seniority');
+            $people_job_location = $request->input('people_job_location');
+            $people_company_name = $request->input('people_company_name');
+            $people_company_linkedin_url = $request->input('people_company_linkedin_url');
+            $people_company_website = $request->input('people_company_website');
+            $people_company_industry = $request->input('people_company_industry');
+            $people_company_headquarter_location = $request->input('people_company_headquarter_location');
+            $people_company_headcount = $request->input('people_company_headcount');
     
-    //         $data = new people_leads;
-    //         $data->search_id = $search_id;
-    //         $data->full_name = $full_name;
-    //         $data->people_linkedin_url = $people_linkedin_url;
-    //         $data->people_job_title = $people_job_title;
-    //         $data->people_job_function = $people_job_function;
-    //         $data->people_job_seniority = $people_job_seniority;
-    //         $data->people_job_location = $people_job_location;
-    //         $data->people_company_name = $people_company_name;
-    //         $data->people_company_linkedin_url = $people_company_linkedin_url;
-    //         $data->people_company_website = $people_company_website;
-    //         $data->people_company_industry = $people_company_industry;
-    //         $data->people_company_headquarter_location = $people_company_headquarter_location;
-    //         $data->people_company_headcount = $people_company_headcount;
-    //         $data->save();
+            $data = new people_leads;
+            $data->search_id = $search_id;
+            $data->full_name = $full_name;
+            $data->people_linkedin_url = $people_linkedin_url;
+            $data->people_job_title = $people_job_title;
+            $data->people_job_function = $people_job_function;
+            $data->people_job_seniority = $people_job_seniority;
+            $data->people_job_location = $people_job_location;
+            $data->people_company_name = $people_company_name;
+            $data->people_company_linkedin_url = $people_company_linkedin_url;
+            $data->people_company_website = $people_company_website;
+            $data->people_company_industry = $people_company_industry;
+            $data->people_company_headquarter_location = $people_company_headquarter_location;
+            $data->people_company_headcount = $people_company_headcount;
+            $data->save();
     
-    //     return response()->json(['message' => 'Data added successfully']);
-    // }
-   public function newUser(Request $request){
+        return response()->json(['message' => 'Data added successfully']);
+    }
+   public function postUser(Request $request){
         
-        $name = $request->input('name');
-        $email = $request->input('email');
+        $username = $request->input('username');
+        $mail = $request->input('mail');
         $password = $request->input('password');
     
         $data = new users;
         
-        $data->name = $name;
-        $data->email = $email;
-        $data->password = $password;
+        $data->username = $username;
+        $data->mail = $mail;
+        $data->password = hash("sha256",$password);
+        $data->is_admin = 0;
+
 
         $data->save();
     
