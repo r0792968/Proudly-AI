@@ -32,8 +32,8 @@ Route::get('getIdBySeniority/{name?}', [DeviceController::class, 'getIdBySeniori
 Route::get('getIdByFunction/{name?}', [DeviceController::class, 'getIdByFunction']);  
 Route::get('getCompanySearchByUserId/{user_id?}', [DeviceController::class, 'getCompanySearchByUserId']);
 Route::get('getPeopleSearchByUserId/{user_id?}', [DeviceController::class, 'getPeopleSearchByUserId']);
-Route::get('getCompanyLeadsByUserId/{user_id?}', [DeviceController::class, 'getCompanyLeadsByUserId']);
-Route::get('getPeopleLeadsByUserId/{user_id?}', [DeviceController::class, 'getPeopleLeadsByUserId']);
+Route::get('getCompanyLeadsBySearchId/{user_id?}', [DeviceController::class, 'getCompanyLeadsBySearchId']);
+Route::get('getPeopleLeadsBySearchId/{user_id?}', [DeviceController::class, 'getPeopleLeadsBySearchId']);
 
 //POST REQUESTS
 Route::post('company-search', [DeviceController::class, 'addData']);
