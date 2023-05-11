@@ -22,6 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // GET REQUESTS
 
+Route::get('getUser/{mail}/{password}', [DeviceController::class, 'getUser']);
+
 
 
 Route::get('getIdByIndustry/{name?}', [DeviceController::class, 'getIdByIndustry']);
@@ -34,6 +36,7 @@ Route::get('getCompanySearchByUserId/{user_id?}', [DeviceController::class, 'get
 Route::get('getPeopleSearchByUserId/{user_id?}', [DeviceController::class, 'getPeopleSearchByUserId']);
 Route::get('getCompanyLeadsBySearchId/{user_id?}', [DeviceController::class, 'getCompanyLeadsBySearchId']);
 Route::get('getPeopleLeadsBySearchId/{user_id?}', [DeviceController::class, 'getPeopleLeadsBySearchId']);
+
 
 //POST REQUESTS
 Route::post('postUser', [DeviceController::class, 'postUser']);
