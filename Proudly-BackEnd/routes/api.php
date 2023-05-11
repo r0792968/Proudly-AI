@@ -28,6 +28,12 @@ Route::get('getIdByIndustry/{name?}', [DeviceController::class, 'getIdByIndustry
 
 Route::get('getIdByHeadcount/{interval?}', [DeviceController::class, 'getIdByHeadcount']);
 Route::get('getIdByHeadquarters/{name?}', [DeviceController::class, 'getIdByHeadquarters']);
+Route::get('getIdBySeniority/{name?}', [DeviceController::class, 'getIdBySeniority']);
+Route::get('getIdByFunction/{name?}', [DeviceController::class, 'getIdByFunction']);  
+Route::get('getCompanySearchByUserId/{user_id?}', [DeviceController::class, 'getCompanySearchByUserId']);
+Route::get('getPeopleSearchByUserId/{user_id?}', [DeviceController::class, 'getPeopleSearchByUserId']);
+Route::get('getCompanyLeadsByUserId/{user_id?}', [DeviceController::class, 'getCompanyLeadsByUserId']);
+Route::get('getPeopleLeadsByUserId/{user_id?}', [DeviceController::class, 'getPeopleLeadsByUserId']);
 
 //POST REQUESTS
 Route::post('company-search', [DeviceController::class, 'addData']);
