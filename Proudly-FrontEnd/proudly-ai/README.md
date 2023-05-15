@@ -1,4 +1,4 @@
-# proudly-ai-app
+# proudly-ai
 
 ## Project setup
 ```

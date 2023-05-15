@@ -1,5 +1,5 @@
 {
-  "name": "proudly-ai-app",
+  "name": "proudly-ai",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -19,13 +19,11 @@
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
-    "autoprefixer": "^10.4.14",
+    "@vue/eslint-config-standard": "^6.1.0",
     "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-vue": "^8.0.3",
-    "postcss": "^8.4.23",
-    "prettier": "^2.4.1",
-    "tailwindcss": "^3.3.2"
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-vue": "^8.0.3"
   }
 }
