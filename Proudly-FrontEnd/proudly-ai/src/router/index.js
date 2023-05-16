@@ -10,10 +10,10 @@ const routes = [
   {
     path: '/Dashboard',
     name: 'Dashboard-page',
-    component: () => import('../components/Dashboard.vue'),
-    meta: {
-      requiresAuth: true
-    }
+    component: () => import('../components/Dashboard.vue')
+    // meta: {
+    //   requiresAuth: true
+    // }
   }
   // {
   //   path: '/login',
