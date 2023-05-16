@@ -152,36 +152,36 @@ class DeviceController extends Controller
         return response()->json(['message' => 'Data added successfully']);
     }
 
-    public function newPeopleLead(Request $request){
+    public function newPeopleLeads(Request $request){
             
-            $search_id = $request->input('search_id');
             $full_name = $request->input('full_name');
-            $people_linkedin_url = $request->input('people_linkedin_url');
-            $people_job_title = $request->input('people_job_title');
-            $people_job_function = $request->input('people_job_function');
-            $people_job_seniority = $request->input('people_job_seniority');
-            $people_job_location = $request->input('people_job_location');
-            $people_company_name = $request->input('people_company_name');
-            $people_company_linkedin_url = $request->input('people_company_linkedin_url');
-            $people_company_website = $request->input('people_company_website');
-            $people_company_industry = $request->input('people_company_industry');
-            $people_company_headquarter_location = $request->input('people_company_headquarter_location');
-            $people_company_headcount = $request->input('people_company_headcount');
+            $company_name = $request->input('company_name');
+            $company_id = $request->input('company_id');
+            $regular_company_url = $request->input('regular_company_url');
+            
+            
+            $title = $request->input('title');
+            $mail = $request->input('mail');
+            $person_url = $request->input('person_url');
+            $connection_degree = $request->input('connection_degree');
+            $company_location = $request->input('company_location');
+            $person_location = $request->input('person_location');
+            $search_id = $request->input('search_id');
+            
     
             $data = new people_leads;
             $data->search_id = $search_id;
+            $data->company_name = $company_name;
+            $data->company_id = $company_id;
+            $data->regular_company_url = $regular_company_url;
             $data->full_name = $full_name;
-            $data->people_linkedin_url = $people_linkedin_url;
-            $data->people_job_title = $people_job_title;
-            $data->people_job_function = $people_job_function;
-            $data->people_job_seniority = $people_job_seniority;
-            $data->people_job_location = $people_job_location;
-            $data->people_company_name = $people_company_name;
-            $data->people_company_linkedin_url = $people_company_linkedin_url;
-            $data->people_company_website = $people_company_website;
-            $data->people_company_industry = $people_company_industry;
-            $data->people_company_headquarter_location = $people_company_headquarter_location;
-            $data->people_company_headcount = $people_company_headcount;
+            $data->person_url = $person_url;
+            $data->title = $title;
+            $data->mail = $mail;
+            $data->connection_degree = $connection_degree;
+            $data->company_location = $company_location;
+            $data->person_location = $person_location;
+          
             $data->save();
     
         return response()->json(['message' => 'Data added successfully']);
