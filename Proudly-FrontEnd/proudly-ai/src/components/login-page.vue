@@ -3,8 +3,8 @@
       <div >
       <h2>Login</h2>
       <form @submit.prevent="login">
-        <label for="username">Username:</label>
-        <input type="text" id="username" v-model="username" required>
+        <label for="E-Mail">E-mail:</label>
+        <input type="text" id="i-email" v-model="email" required>
 
         <label for="password">Password:</label>
         <input type="password" id="password" v-model="password" required>
@@ -23,21 +23,69 @@ export default {
   },
   data () {
     return {
-      username: '',
-      password: '',
+      mail: document.getElementById('e-mail'),
+      password: document.getElementById('password'),
       isLoggedIn: false
     }
   },
   methods: {
     login () {
-      // Here, you would typically send the login request to a server for validation
-      // For the sake of simplicity, we'll assume the login is successful
-      // In a real application, you would implement proper authentication and authorization
-      this.isLoggedIn = true
+      const OPTIONS = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          // eslint-disable-next-line
+          'mail': this.mail
+        }
+      }
+      fetch('http://127.0.0.1:8000/api/getUser/somemail@gmail.com/test123', OPTIONS)
+        .then(response => response.json())
+        .then(response => console.log(response))
     }
   }
 }
 </script>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+h2 {
+  text-align: center;
+}
+
+form {
+  width: 300px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 100px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+form input[type="text"],
+form input[type="password"] {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+form input[type="submit"] {
+  width: 100%;
+  background-color: crimson;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+form input[type="submit"]:hover {
+  background-color: #45a049;
+}
+
 </style>
