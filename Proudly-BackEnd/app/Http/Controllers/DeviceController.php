@@ -25,7 +25,13 @@ class DeviceController extends Controller
     public function getUser($mail,$password){
         $password = hash("sha256",$password);
         $data = users::where('mail', $mail)->where('password', $password)->first();
-        return response()->json($data);}
+        if($data){
+            return response()->json($data);
+        }
+        else{
+            return response()->json("user not found");
+        }
+    }
 
 
     public function getIdByIndustry($name = null)
@@ -211,6 +217,7 @@ class DeviceController extends Controller
     public function newCompanySearch(Request $request){
         
         $user_id = $request->input('user_id');
+        $anual_revenue = $request->input('anual_revenue');
         $headcount = $request->input('headcount');
         $industry = $request->input('industry');
         $geography = $request->input('geography');
@@ -218,6 +225,7 @@ class DeviceController extends Controller
         $data = new company_search;
         
         $data->user_id = $user_id;
+        $data->anual_revenue = $anual_revenue;
         $data->headcount = $headcount;
         $data->industry = $industry;
         $data->geography = $geography;
@@ -349,7 +357,8 @@ class DeviceController extends Controller
         ];
         
        
-    }    
+    }  
+
     
     // Example usage
     // $key = '056OL29RRtKkfikDIAslL7lytVsODwK3Z5xLsoTDy7Q';
