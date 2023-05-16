@@ -41,5 +41,8 @@ Route::get('getPeopleLeadsBySearchId/{user_id?}', [DeviceController::class, 'get
 //POST REQUESTS
 Route::post('postUser', [DeviceController::class, 'postUser']);
 Route::post('newPeopleLeads', [DeviceController::class, 'newPeopleLeads']);
+Route::post('newCompanyLeads', [DeviceController::class, 'newCompanyLeads']);
+Route::post('newPeopleSearch', [DeviceController::class, 'newPeopleSearch']);
+Route::post('newCompanySearch', [DeviceController::class, 'newCompanySearch']);
 
 //test push to origin

@@ -129,7 +129,7 @@ class DeviceController extends Controller
     // POST REQUESTS
   
 
-    public function newCompanyLead(Request $request){
+    public function newCompanyLeads(Request $request){
         
         $search_id = $request->input('search_id');
         $name = $request->input('name');
