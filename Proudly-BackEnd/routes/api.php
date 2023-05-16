@@ -44,5 +44,8 @@ Route::post('newPeopleLeads', [DeviceController::class, 'newPeopleLeads']);
 Route::post('newCompanyLeads', [DeviceController::class, 'newCompanyLeads']);
 Route::post('newPeopleSearch', [DeviceController::class, 'newPeopleSearch']);
 Route::post('newCompanySearch', [DeviceController::class, 'newCompanySearch']);
+Route::post('updateAndLaunch', [DeviceController::class, 'updateAndLaunch']);
+Route::post('fetcher', [DeviceController::class, 'fetcher']);
+Route::post('download', [DeviceController::class, 'download']);
 
 //test push to origin

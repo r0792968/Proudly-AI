@@ -49,6 +49,7 @@ function fetcher(id,key){
       return fetch('https://api.phantombuster.com/api/v2/agents/fetch?id='+id, options)
         .then(response => response.json())
         .then(response => {
+          
           sessionStorage.setItem("s3Folder", response.s3Folder);
           sessionStorage.setItem("orgs3Folder", response.orgS3Folder);
         })

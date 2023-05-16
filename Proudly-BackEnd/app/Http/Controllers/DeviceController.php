@@ -14,6 +14,10 @@ use App\Models\people_search;
 use App\Models\people_leads;
 use App\Models\company_search;
 use App\Models\users;
+use Exception;
+use GuzzleHttp\Client;
+
+
 
 class DeviceController extends Controller
 {
@@ -239,5 +243,121 @@ class DeviceController extends Controller
         return response()->json(['message' => 'Data added successfully']);
 
     }
+
+    //phantom Buster requests
+
+    function updateAndLaunch(Request $request) {
+       
+        $address = $request->input('address');
+        $id = '864520330260797';
+        $name = 'Proudly';
+        $key = '056OL29RRtKkfikDIAslL7lytVsODwK3Z5xLsoTDy7Q';
+       
+        // Update function
+        $updateUrl = 'https://api.phantombuster.com/api/v2/agents/save';
+        $updateData = array(
+            'id' => $id,
+            'name' => $name,
+            'proxyAddress' => $address
+        );
+        $updateHeaders = array(
+            'Content-Type: application/json',
+            'X-Phantombuster-Key: ' . $key
+        );
+        $updateOptions = array(
+            'http' => array(
+                'header' => $updateHeaders,
+                'method' => 'POST',
+                'content' => json_encode($updateData)
+            )
+        );
+        $updateContext = stream_context_create($updateOptions);
+        $updateResponse = file_get_contents($updateUrl, false, $updateContext);
+    
+        if ($updateResponse === false) {
+            // Handle error
+            echo "Error occurred during update API call";
+            return;
+        }
+    
+        // Launch function
+        $launchUrl = 'https://api.phantombuster.com/api/v2/agents/launch';
+        $launchData = array(
+            'id' => $id
+        );
+        $launchHeaders = array(
+            'Content-Type: application/json',
+            'X-Phantombuster-Key: ' . $key
+        );
+        $launchOptions = array(
+            'http' => array(
+                'header' => $launchHeaders,
+                'method' => 'POST',
+                'content' => json_encode($launchData)
+            )
+        );
+        $launchContext = stream_context_create($launchOptions);
+        $launchResponse = file_get_contents($launchUrl, false, $launchContext);
+    
+        if ($launchResponse === false) {
+            // Handle error
+            echo "Error occurred during launch API call";
+            return;
+        }
+    
+        // Handle response
+        $updateResponse = json_decode($updateResponse, true);
+        $launchResponse = json_decode($launchResponse, true);
+    
+        echo "Update API response: " . print_r($updateResponse, true) . "\n";
+        echo "Launch API response: " . print_r($launchResponse, true) . "\n";
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'API call executed successfully'
+        ]);
+    }
+    
+    
+    // Fetcher function
+    function fetcher() {
+        
+       
+    
+      
+        // require_once('vendor/autoload.php');
+
+        $client = new \GuzzleHttp\Client();
+
+        $response = $client->request('GET', 'https://api.phantombuster.com/api/v2/agents/fetch?id=864520330260797', [
+        'headers' => [
+            'X-Phantombuster-Key' => '056OL29RRtKkfikDIAslL7lytVsODwK3Z5xLsoTDy7Q',
+            'accept' => 'application/json',
+        ],
+        ]);
+
+        $responseBody = json_decode($response->getBody(), true);
+
+        // Store the s3Folder and orgs3Folder values in variables
+        $s3Folder = $responseBody['s3Folder'];
+        $orgs3Folder = $responseBody['orgS3Folder'];
+        
+        // You can do further processing or return the values as needed
+        return [
+            's3Folder' => $s3Folder,
+            'orgs3Folder' => $orgs3Folder,
+        ];
+        
+       
+    }    
+    
+    // Example usage
+    // $key = '056OL29RRtKkfikDIAslL7lytVsODwK3Z5xLsoTDy7Q';
+    // $id = '864520330260797';
+    // $name = 'Proudly';
+    // $address = 'https://www.linkedin.com/sales/search/company?query=(filters%3AList((type%3AANNUAL_REVENUE%2CrangeValue%3A(min%3A1%2Cmax%3A100)%2CselectedSubFilter%3AUSD)%2C(type%3ACOMPANY_HEADCOUNT%2Cvalues%3AList((id%3AD%2Ctext%3A51-200%2CselectionType%3AINCLUDED)))))&sessionId=LFGMh86aSfic4RnHsrulRQ%3D%3D&viewAllFilters=true';
+    
+    // updateAndLaunch($address, $id, $name, $key);
+    
 
 }
