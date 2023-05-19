@@ -23,12 +23,15 @@ class DeviceController extends Controller
 {
     // GET REQUESTS
     public function getUser($mail,$password){
-        $password = hash("sha256",$password);
-        $data = users::where('mail', $mail)->where('password', $password)->first();
-        if($data){
+        $password = hash("sha256", $password);
+        $data = users::where('mail', $mail)
+                     ->where('password', $password)
+                     ->where('is_active', 1)
+                     ->first();
+    
+        if ($data) {
             return response()->json($data);
-        }
-        else{
+        } else {
             return response()->json("user not found");
         }
     }
@@ -37,7 +40,7 @@ class DeviceController extends Controller
     public function getIdByIndustry($name = null)
     {
         if ($name) {
-            $data = filter_industries::where('industry_name', $name)->select('ID')->first();
+            $data = filter_industries::where('industry_name', $name)->where('is_active', 1)->select('ID')->first();
         } 
         else {
             $data = filter_industries::all('ID');
@@ -49,7 +52,7 @@ class DeviceController extends Controller
     public function getIdByHeadcount($interval = null)
     {
         if ($interval) {
-            $data = filter_headcount::where('headcount_interval', $interval)->select('ID')->first();
+            $data = filter_headcount::where('headcount_interval', $interval)->where('is_active', 1)->select('ID')->first();
         } 
         else {
             $data = filter_headcount::all('ID');
@@ -60,7 +63,7 @@ class DeviceController extends Controller
     public function getIdByHeadquarters($name = null)
     {
         if ($name) {
-            $data = filter_headquarter_location::where('industry_name', $name)->select('ID')->first();
+            $data = filter_headquarter_location::where('industry_name', $name)->where('is_active', 1)->select('ID')->first();
         } 
         else {
             $data = filter_headquarter_location::all('ID');
@@ -72,7 +75,7 @@ class DeviceController extends Controller
     public function getIdBySeniority($name = null)
     {
         if ($name) {
-            $data = filter_seniority::where('seniority_name', $name)->select('ID')->first();
+            $data = filter_seniority::where('seniority_name', $name)->where('is_active', 1)->select('ID')->first();
         } 
         else {
             $data = filter_seniority::all('ID');
@@ -83,7 +86,7 @@ class DeviceController extends Controller
     public function getIdByFunction($name = null)
     {
         if ($name) {
-            $data = filter_function::where('function_name', $name)->select('ID')->first();
+            $data = filter_function::where('function_name', $name)->where('is_active', 1)->select('ID')->first();
         } 
         else {
             $data = filter_function::all('ID');
@@ -95,7 +98,7 @@ class DeviceController extends Controller
     public function getCompanySearchByUserId($user_id = null)
     {
         if ($user_id) {
-            $data = company_search::all()->where('user_id', $user_id);
+            $data = company_search::all()->where('user_id', $user_id)->where('is_active', 1);
         } 
         else {
             $data = "user not found";
@@ -106,7 +109,7 @@ class DeviceController extends Controller
     public function getCompanyLeadsBySearchId($search_id = null)
     {
         if ($search_id) {
-            $data = company_leads::all()->where('search_id', $search_id);
+            $data = company_leads::all()->where('search_id', $search_id)->where('is_active', 1);
         } 
         else {
             $data = "search not found";
@@ -116,7 +119,7 @@ class DeviceController extends Controller
     }
     public function getPeopleSearchByUserId($user_id = null){
         if ($user_id) {
-            $data = people_search::all()->where('user_id', $user_id);
+            $data = people_search::all()->where('user_id', $user_id)->where('is_active', 1);
         } 
         else {
             $data = "user not found";
@@ -127,7 +130,7 @@ class DeviceController extends Controller
 
     public function getPeopleLeadsBySearchId($search_id = null){
         if ($search_id) {
-            $data = people_leads::all()->where('search_id', $search_id);
+            $data = people_leads::all()->where('search_id', $search_id)->where('is_active', 1);
         } 
         else {
             $data = "search not found";

@@ -22,30 +22,30 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // GET REQUESTS
 
-Route::get('getUser/{mail}/{password}', [DeviceController::class, 'getUser']);
+Route::get('user/getUser/{mail}/{password}', [DeviceController::class, 'getUser']);
 
 
 
-Route::get('getIdByIndustry/{name?}', [DeviceController::class, 'getIdByIndustry']);
+Route::get('filter/getIdByIndustry/{name?}', [DeviceController::class, 'getIdByIndustry']);
 
-Route::get('getIdByHeadcount/{interval?}', [DeviceController::class, 'getIdByHeadcount']);
-Route::get('getIdByHeadquarters/{name?}', [DeviceController::class, 'getIdByHeadquarters']);
-Route::get('getIdBySeniority/{name?}', [DeviceController::class, 'getIdBySeniority']);
-Route::get('getIdByFunction/{name?}', [DeviceController::class, 'getIdByFunction']);  
-Route::get('getCompanySearchByUserId/{user_id?}', [DeviceController::class, 'getCompanySearchByUserId']);
-Route::get('getPeopleSearchByUserId/{user_id?}', [DeviceController::class, 'getPeopleSearchByUserId']);
-Route::get('getCompanyLeadsBySearchId/{user_id?}', [DeviceController::class, 'getCompanyLeadsBySearchId']);
-Route::get('getPeopleLeadsBySearchId/{user_id?}', [DeviceController::class, 'getPeopleLeadsBySearchId']);
+Route::get('filter/getIdByHeadcount/{interval?}', [DeviceController::class, 'getIdByHeadcount']);
+Route::get('filter/getIdByHeadquarters/{name?}', [DeviceController::class, 'getIdByHeadquarters']);
+Route::get('filter/getIdBySeniority/{name?}', [DeviceController::class, 'getIdBySeniority']);
+Route::get('filter/getIdByFunction/{name?}', [DeviceController::class, 'getIdByFunction']);  
+Route::get('company/getCompanySearchByUserId/{user_id?}', [DeviceController::class, 'getCompanySearchByUserId']);
+Route::get('people/getPeopleSearchByUserId/{user_id?}', [DeviceController::class, 'getPeopleSearchByUserId']);
+Route::get('company/getCompanyLeadsBySearchId/{user_id?}', [DeviceController::class, 'getCompanyLeadsBySearchId']);
+Route::get('people/getPeopleLeadsBySearchId/{user_id?}', [DeviceController::class, 'getPeopleLeadsBySearchId']);
 
 
 //POST REQUESTS
-Route::post('postUser', [DeviceController::class, 'postUser']);
-Route::post('newPeopleLeads', [DeviceController::class, 'newPeopleLeads']);
-Route::post('newCompanyLeads', [DeviceController::class, 'newCompanyLeads']);
-Route::post('newPeopleSearch', [DeviceController::class, 'newPeopleSearch']);
-Route::post('newCompanySearch', [DeviceController::class, 'newCompanySearch']);
-Route::post('updateAndLaunch', [DeviceController::class, 'updateAndLaunch']);
-Route::post('fetcher', [DeviceController::class, 'fetcher']);
-Route::post('download', [DeviceController::class, 'download']);
+Route::post('user/postUser', [DeviceController::class, 'postUser']);
+Route::post('people/newPeopleLeads', [DeviceController::class, 'newPeopleLeads']);
+Route::post('company/newCompanyLeads', [DeviceController::class, 'newCompanyLeads']);
+Route::post('people/newPeopleSearch', [DeviceController::class, 'newPeopleSearch']);
+Route::post('company/newCompanySearch', [DeviceController::class, 'newCompanySearch']);
+Route::post('phantom/updateAndLaunch', [DeviceController::class, 'updateAndLaunch']);
+Route::post('phantom/fetcher', [DeviceController::class, 'fetcher']);
+Route::post('phantom/download', [DeviceController::class, 'download']);
 
 //test push to origin
