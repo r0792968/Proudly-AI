@@ -288,42 +288,42 @@ class DeviceController extends Controller
             return;
         }
     
-        // Launch function
-        $launchUrl = 'https://api.phantombuster.com/api/v2/agents/launch';
-        $launchData = array(
-            'id' => $id
-        );
-        $launchHeaders = array(
-            'Content-Type: application/json',
-            'X-Phantombuster-Key: ' . $key
-        );
-        $launchOptions = array(
-            'http' => array(
-                'header' => $launchHeaders,
-                'method' => 'POST',
-                'content' => json_encode($launchData)
-            )
-        );
-        $launchContext = stream_context_create($launchOptions);
-        $launchResponse = file_get_contents($launchUrl, false, $launchContext);
+        // // Launch function
+        // $launchUrl = 'https://api.phantombuster.com/api/v2/agents/launch';
+        // $launchData = array(
+        //     'id' => $id
+        // );
+        // $launchHeaders = array(
+        //     'Content-Type: application/json',
+        //     'X-Phantombuster-Key: ' . $key
+        // );
+        // $launchOptions = array(
+        //     'http' => array(
+        //         'header' => $launchHeaders,
+        //         'method' => 'POST',
+        //         'content' => json_encode($launchData)
+        //     )
+        // );
+        // $launchContext = stream_context_create($launchOptions);
+        // $launchResponse = file_get_contents($launchUrl, false, $launchContext);
     
-        if ($launchResponse === false) {
-            // Handle error
-            echo "Error occurred during launch API call";
-            return;
-        }
+        // if ($launchResponse === false) {
+        //     // Handle error
+        //     echo "Error occurred during launch API call";
+        //     return;
+        // }
     
-        // Handle response
-        $updateResponse = json_decode($updateResponse, true);
-        $launchResponse = json_decode($launchResponse, true);
+        // // Handle response
+        // $updateResponse = json_decode($updateResponse, true);
+        // $launchResponse = json_decode($launchResponse, true);
     
-        echo "Update API response: " . print_r($updateResponse, true) . "\n";
-        echo "Launch API response: " . print_r($launchResponse, true) . "\n";
+        // echo "Update API response: " . print_r($updateResponse, true) . "\n";
+        // echo "Launch API response: " . print_r($launchResponse, true) . "\n";
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'API call executed successfully'
-        ]);
+        // return response()->json([
+        //     'status' => 'success',
+        //     'message' => 'API call executed successfully'
+        // ]);
     }
     
     
@@ -351,13 +351,30 @@ class DeviceController extends Controller
         $orgs3Folder = $responseBody['orgS3Folder'];
         
         // You can do further processing or return the values as needed
-        return [
-            's3Folder' => $s3Folder,
-            'orgs3Folder' => $orgs3Folder,
-        ];
         
-       
+        $url = "https://phantombuster.s3.amazonaws.com/{$orgs3Folder}/{$s3Folder}/result.json";
+  
+        $data = file_get_contents($url);
+
+        if ($data === false) {
+            // Error handling if the request fails
+            echo "Failed to fetch data from the URL.";
+          } else {
+            $jsonData = json_decode($data);
+        
+            if ($jsonData === null) {
+              // Error handling if JSON decoding fails
+              echo "Failed to decode JSON data.";
+            } else {
+              // Process the decoded JSON data
+              var_dump($jsonData);
+            }
+          }
     }  
+
+    public function download(){
+        
+    }
 
     
     // Example usage

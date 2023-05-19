@@ -1,7 +1,7 @@
 key = "056OL29RRtKkfikDIAslL7lytVsODwK3Z5xLsoTDy7Q"
 id = '864520330260797'
 name = "Proudly"
-adress = 'https://www.linkedin.com/sales/search/company?query=(filters%3AList((type%3AANNUAL_REVENUE%2CrangeValue%3A(min%3A1%2Cmax%3A100)%2CselectedSubFilter%3AUSD)%2C(type%3ACOMPANY_HEADCOUNT%2Cvalues%3AList((id%3AD%2Ctext%3A51-200%2CselectionType%3AINCLUDED)))))&sessionId=LFGMh86aSfic4RnHsrulRQ%3D%3D&viewAllFilters=true'
+adress = 'https://www.linkedin.com/sales/search/company?query=(filters%3AList((type%3ACOMPANY_HEADCOUNT%2Cvalues%3AList((id%3AD%2Ctext%3A51-200%2CselectionType%3AINCLUDED)))%2C(type%3AANNUAL_REVENUE%2CrangeValue%3A(min%3A1%2Cmax%3A5)%2CselectedSubFilter%3AUSD)%2C(type%3AINDUSTRY%2Cvalues%3AList((id%3A1912%2Ctext%3AAdministrative%2520and%2520Support%2520Services%2CselectionType%3AINCLUDED)))%2C(type%3AREGION%2Cvalues%3AList((id%3A103644278%2Ctext%3AUnited%2520States%2CselectionType%3AINCLUDED)))))&sessionId=hbkJrt9MRZ6JlT7nuwJV2Q%3D%3D&viewAllFilters=true'
 function update(adress,id,name,key){
     const options = {
         method: 'POST',
@@ -21,6 +21,8 @@ function update(adress,id,name,key){
         .then(response => response.json())
         .then(response => console.log(response))
         .catch(err => console.error(err));
+
+    console.log("updated");
 }
 function launch(key,id){
     const options = {
@@ -57,9 +59,9 @@ function fetcher(id,key){
 }
 
 
-//update(adress,id,name,key);
+update(adress,id,name,key);
 //launch(key,id);
-fetcher(id,key);
+// fetcher(id,key);
 
 const s3Folder =  sessionStorage.getItem("s3Folder")
 const orgS3Folder =  sessionStorage.getItem("orgs3Folder")
