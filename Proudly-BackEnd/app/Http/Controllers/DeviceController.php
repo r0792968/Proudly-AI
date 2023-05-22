@@ -49,6 +49,13 @@ class DeviceController extends Controller
         return response()->json($data);
     }
 
+    public function getIndustryNames()
+    {
+        $data = filter_industries::all('industry_name');
+        return response()->json($data);
+    }
+   
+
     public function getIdByHeadcount($interval = null)
     {
         if ($interval) {
@@ -295,7 +302,7 @@ class DeviceController extends Controller
 
         $client = new \GuzzleHttp\Client();
 
-        $response = $client->request('GET', 'https://api.phantombuster.com/api/v2/agents/fetch?id=864520330260797', [
+        $response = $client->request('GET', 'https://api.phantombuster.com/api/v2/agents/fetch?id=5249917770822739', [
         'headers' => [
             'X-Phantombuster-Key' => '056OL29RRtKkfikDIAslL7lytVsODwK3Z5xLsoTDy7Q',
             'accept' => 'application/json',

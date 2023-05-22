@@ -36,6 +36,7 @@ Route::get('company/getCompanySearchByUserId/{user_id?}', [DeviceController::cla
 Route::get('people/getPeopleSearchByUserId/{user_id?}', [DeviceController::class, 'getPeopleSearchByUserId']);
 Route::get('company/getCompanyLeadsBySearchId/{user_id?}', [DeviceController::class, 'getCompanyLeadsBySearchId']);
 Route::get('people/getPeopleLeadsBySearchId/{user_id?}', [DeviceController::class, 'getPeopleLeadsBySearchId']);
+Route::get('filter/getIndustryNames', [DeviceController::class, 'getIndustryNames']);
 
 
 //POST REQUESTS
