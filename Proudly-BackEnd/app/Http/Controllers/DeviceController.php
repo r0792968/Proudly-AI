@@ -293,9 +293,9 @@ class DeviceController extends Controller
     
     
     // Fetcher function
-    function fetcher() {
+    function fetcher(Request $request) {
         
-       
+       $search_id = $request->input('search_id');
     
       
         // require_once('vendor/autoload.php');
@@ -332,9 +332,37 @@ class DeviceController extends Controller
               echo "Failed to decode JSON data.";
             } else {
               // Process the decoded JSON data
-              var_dump($jsonData);
+              try {
+                foreach ($jsonData as $data) {
+                    $companyId = $data->companyId;
+                    $companyName = $data->companyName;
+                    $description = $data->description;
+                    $companyUrl = $data->companyUrl;
+                    $headcount = $data->employeeCountRange;
+                    
+        
+                    $companyLead = new company_leads();
+                    $companyLead->company_id = $companyId;
+                    $companyLead->name = $companyName;
+                    $companyLead->description = $description;
+                    $companyLead->company_url = $companyUrl;
+                    $companyLead->headcount = $headcount;
+                    $companyLead->search_id = $search_id;
+                    $companyLead->created_at = now();
+                    $companyLead->updated_at = now();
+                    $companyLead->is_active = 1;
+        
+                    $companyLead->save();
+                }
+        
+                echo "Data inserted successfully!";
+            } catch (Exception $e) {
+                echo "Error: " . $e->getMessage();
+            }
             }
           }
+
+        
     }  
 
     public function download(){
