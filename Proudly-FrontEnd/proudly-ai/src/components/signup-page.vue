@@ -1,51 +1,44 @@
 <template>
   <div class="login">
       <div >
-      <h2>Login</h2>
-      <form @submit.prevent="login">
+      <h2>Signup</h2>
+      <form @submit.prevent="signup">
+        <label for="username">Username:</label>
+        <input type="text" id="username" v-model="username" required>
+
         <label for="E-Mail">E-mail:</label>
         <input type="text" id="mail" v-model="mail" required>
 
         <label for="password">Password:</label>
         <input type="password" id="password" v-model="password" required>
 
-        <input type="submit" value="Login">
+        <input type="submit" value="Signup">
       </form>
-      <button @click="redirectToSignup">Signup</button>
+
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'login-page',
+  name: 'signup-page',
   props: {
     msg: String
   },
   data () {
     return {
+      username: document.getElementById('username'),
       mail: document.getElementById('mail'),
       password: document.getElementById('password'),
       isLoggedIn: false
     }
   },
   methods: {
-    redirectToSignup () {
-        this.$router.push('/Signup');
-    },
-    login () {
-      fetch('http://127.0.0.1:8000/api/user/getUser/'+this.mail+'/'+this.password)
-        .then(response => response.json())
-        .then(response => {
-          console.log(response);
-          if (response !== 'user not found') {
-            sessionStorage.setItem('LoggedInStatus', true);
-            this.$router.push('/dashboard');
-          } else {
-            alert("Wrong credentials");
-            sessionStorage.setItem('LoggedInStatus', false);
-          }
-        });
+    signup(){
+      fetch('http://127.0.0.1:8000/api/user/postUser?username='+this.username+'+&mail='+this.mail+'+&password='+this.password, {method: "POST"})
+              .then(response => response.json())
+              .then(response => console.log(response))
+
     }
   }
 }
