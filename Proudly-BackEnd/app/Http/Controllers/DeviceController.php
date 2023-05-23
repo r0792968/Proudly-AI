@@ -22,7 +22,16 @@ use GuzzleHttp\Client;
 class DeviceController extends Controller
 {
     // GET REQUESTS
-    public function getUser($mail,$password){
+    public function getUser(Request $request){
+
+        $mail = $request->header('mail'); // Accessing the 'email' header
+        $password = $request->header('password'); // Accessing the 'password' header
+    
+        if (!$mail || !$password) {
+            // If header parameters are not provided, check query parameters
+            $mail = $request->query('mail');
+            $password = $request->query('password');
+        }
         $password = hash("sha256", $password);
         $data = users::where('mail', $mail)
                      ->where('password', $password)
@@ -37,8 +46,13 @@ class DeviceController extends Controller
     }
 
 
-    public function getIdByIndustry($name = null)
+    public function getIdByIndustry(Request $request)
     {
+        $name = $request->header('name'); // Accessing the 'name' header
+        if (!$name) {
+            // If header parameters are not provided, check query parameters
+            $name = $request->query('name');
+        }
         if ($name) {
             $data = filter_industries::where('industry_name', $name)->where('is_active', 1)->select('ID')->first();
         } 
@@ -56,8 +70,13 @@ class DeviceController extends Controller
     }
    
 
-    public function getIdByHeadcount($interval = null)
+    public function getIdByHeadcount(Request $request)
     {
+        $interval = $request->header('interval'); // Accessing the 'interval' header
+        if (!$interval) {
+            // If header parameters are not provided, check query parameters
+            $interval = $request->query('interval');
+        }
         if ($interval) {
             $data = filter_headcount::where('headcount_interval', $interval)->where('is_active', 1)->select('ID')->first();
         } 
@@ -66,9 +85,19 @@ class DeviceController extends Controller
         }
     
         return response()->json($data);
+    
+    
+       
+    
+       
     }
-    public function getIdByHeadquarters($name = null)
+    public function getIdByHeadquarters(Request $request)
     {
+        $name = $request->header('name'); // Accessing the 'name' header
+        if (!$name) {
+            // If header parameters are not provided, check query parameters
+            $name = $request->query('name');
+        }
         if ($name) {
             $data = filter_headquarter_location::where('industry_name', $name)->where('is_active', 1)->select('ID')->first();
         } 
@@ -78,9 +107,15 @@ class DeviceController extends Controller
     
         return response()->json($data);
     }
+   
 
-    public function getIdBySeniority($name = null)
+    public function getIdBySeniority(request $request)
     {
+        $name = $request->header('name'); // Accessing the 'name' header
+        if (!$name) {
+            // If header parameters are not provided, check query parameters
+            $name = $request->query('name');
+        }
         if ($name) {
             $data = filter_seniority::where('seniority_name', $name)->where('is_active', 1)->select('ID')->first();
         } 
@@ -90,8 +125,14 @@ class DeviceController extends Controller
     
         return response()->json($data);
     }
-    public function getIdByFunction($name = null)
+   
+    public function getIdByFunction(Request $request)
     {
+        $name = $request->header('name'); // Accessing the 'name' header
+        if (!$name) {
+            // If header parameters are not provided, check query parameters
+            $name = $request->query('name');
+        }
         if ($name) {
             $data = filter_function::where('function_name', $name)->where('is_active', 1)->select('ID')->first();
         } 
@@ -100,46 +141,83 @@ class DeviceController extends Controller
         }
     
         return response()->json($data);
-    }   
+    }
+
     
-    public function getCompanySearchByUserId($user_id = null)
+    public function getCompanySearchByUserId(request $request)
     {
+        $user_id = $request->header('user_id'); // Accessing the 'user_id' header
+        if (!$user_id) {
+            // If header parameters are not provided, check query parameters
+            $user_id = $request->query('user_id');
+        }
         if ($user_id) {
             $data = company_search::all()->where('user_id', $user_id)->where('is_active', 1);
+            if($data->isEmpty()) {
+                $data = "user not found";
+            }
         } 
-        else {
+        else{
             $data = "user not found";
         }
     
+       
         return response()->json($data);
     }
-    public function getCompanyLeadsBySearchId($search_id = null)
+    
+    public function getCompanyLeadsBySearchId(request $request)
     {
+        $search_id = $request->header('search_id'); // Accessing the 'search_id' header
+        if (!$search_id) {
+            // If header parameters are not provided, check query parameters
+            $search_id = $request->query('search_id');
+        }
         if ($search_id) {
             $data = company_leads::all()->where('search_id', $search_id)->where('is_active', 1);
+            if($data->isEmpty()) {
+                $data = "search not found";
+            }
         } 
-        else {
+        else{
             $data = "search not found";
         }
     
         return response()->json($data);
     }
-    public function getPeopleSearchByUserId($user_id = null){
+   
+    public function getPeopleSearchByUserId(request $request){
+        $user_id = $request->header('user_id'); // Accessing the 'user_id' header
+        if (!$user_id) {
+            // If header parameters are not provided, check query parameters
+            $user_id = $request->query('user_id');
+        }
+
         if ($user_id) {
             $data = people_search::all()->where('user_id', $user_id)->where('is_active', 1);
+            if($data->isEmpty()) {
+                $data = "user not found";
+            }
         } 
-        else {
+        else{
             $data = "user not found";
         }
     
         return response()->json($data);
     }
 
-    public function getPeopleLeadsBySearchId($search_id = null){
+    public function getPeopleLeadsBySearchId(request $request){
+        $search_id = $request->header('search_id'); // Accessing the 'search_id' header
+        if (!$search_id) {
+            // If header parameters are not provided, check query parameters
+            $search_id = $request->query('search_id');
+        }
         if ($search_id) {
             $data = people_leads::all()->where('search_id', $search_id)->where('is_active', 1);
+            if($data->isEmpty()) {
+                $data = "search not found";
+            }
         } 
-        else {
+        else{
             $data = "search not found";
         }
     
@@ -151,13 +229,13 @@ class DeviceController extends Controller
 
     public function newCompanyLeads(Request $request){
         
-        $search_id = $request->input('search_id');
-        $name = $request->input('name');
-        $company_url = $request->input('company_url');
-        $description = $request->input('description');
-        $company_id = $request->input('company_id');
+        $search_id = $request->header('search_id');
+        $name = $request->header('name');
+        $company_url = $request->header('company_url');
+        $description = $request->header('description');
+        $company_id = $request->header('company_id');
         
-        $headcount = $request->input('headcount');
+        $headcount = $request->header('headcount');
 
         $data = new company_leads;
         $data->search_id = $search_id;
@@ -167,6 +245,9 @@ class DeviceController extends Controller
         $data->company_id = $company_id;
         
         $data->headcount = $headcount;
+        $data->created_at = now();
+        $data->updated_at = now();
+        $data->is_active = 1;
         $data->save();
     
         return response()->json(['message' => 'Data added successfully']);
@@ -174,19 +255,19 @@ class DeviceController extends Controller
 
     public function newPeopleLeads(Request $request){
             
-            $full_name = $request->input('full_name');
-            $company_name = $request->input('company_name');
-            $company_id = $request->input('company_id');
-            $regular_company_url = $request->input('regular_company_url');
+            $full_name = $request->header('full_name');
+            $company_name = $request->header('company_name');
+            $company_id = $request->header('company_id');
+            $regular_company_url = $request->header('regular_company_url');
             
             
-            $title = $request->input('title');
-            $mail = $request->input('mail');
-            $person_url = $request->input('person_url');
-            $connection_degree = $request->input('connection_degree');
-            $company_location = $request->input('company_location');
-            $person_location = $request->input('person_location');
-            $search_id = $request->input('search_id');
+            $title = $request->header('title');
+            $mail = $request->header('mail');
+            $person_url = $request->header('person_url');
+            $connection_degree = $request->header('connection_degree');
+            $company_location = $request->header('company_location');
+            $person_location = $request->header('person_location');
+            $search_id = $request->header('search_id');
             
     
             $data = new people_leads;
@@ -201,6 +282,9 @@ class DeviceController extends Controller
             $data->connection_degree = $connection_degree;
             $data->company_location = $company_location;
             $data->person_location = $person_location;
+            $data->created_at = now();
+            $data->updated_at = now();
+            $data->is_active = 1;
           
             $data->save();
     
@@ -208,9 +292,9 @@ class DeviceController extends Controller
     }
    public function postUser(Request $request){
         
-        $username = $request->input('username');
-        $mail = $request->input('mail');
-        $password = $request->input('password');
+        $username = $request->header('username');
+        $mail = $request->header('mail');
+        $password = $request->header('password');
     
         $data = new users;
         
@@ -218,6 +302,9 @@ class DeviceController extends Controller
         $data->mail = $mail;
         $data->password = hash("sha256",$password);
         $data->is_admin = 0;
+        $data->created_at = now();
+        $data->updated_at = now();
+        $data->is_active = 1;
 
 
         $data->save();
@@ -226,11 +313,11 @@ class DeviceController extends Controller
     }
     public function newCompanySearch(Request $request){
         
-        $user_id = $request->input('user_id');
-        $anual_revenue = $request->input('anual_revenue');
-        $headcount = $request->input('headcount');
-        $industry = $request->input('industry');
-        $geography = $request->input('geography');
+        $user_id = $request->header('user_id');
+        $anual_revenue = $request->header('anual_revenue');
+        $headcount = $request->header('headcount');
+        $industry = $request->header('industry');
+        $geography = $request->header('geography');
     
         $data = new company_search;
         
@@ -239,23 +326,29 @@ class DeviceController extends Controller
         $data->headcount = $headcount;
         $data->industry = $industry;
         $data->geography = $geography;
+        $data->created_at = now();
+        $data->updated_at = now();
+        $data->is_active = 1;
 
         $data->save();
     
         return response()->json(['message' => 'Data added successfully']);
     }
     public function newPeopleSearch(Request $request){
-        $user_id = $request->input('user_id');
+        $user_id = $request->header('user_id');
        
-        $job_function = $request->input('function');
-        $job_seniority = $request->input('seniority');
-        $current_company = $request->input('current_company');
+        $job_function = $request->header('function');
+        $job_seniority = $request->header('seniority');
+        $current_company = $request->header('current_company');
 
         $data = new people_search;
         $data->user_id = $user_id;
         $data->function = $job_function;
         $data->seniority = $job_seniority;
         $data->current_company = $current_company;
+        $data->created_at = now();
+        $data->updated_at = now();
+        $data->is_active = 1;
         $data->save();
     
         return response()->json(['message' => 'Data added successfully']);
@@ -266,7 +359,7 @@ class DeviceController extends Controller
 
     function updateAndLaunch(Request $request) {
        
-        $address = $request->input('address');
+        $address = $request->header('address');
         
        
 
@@ -295,7 +388,8 @@ class DeviceController extends Controller
     // Fetcher function
     function fetcher(Request $request) {
         
-       $search_id = $request->input('search_id');
+       $search_id = $request->header('search_id');
+       $type = $request->header('type');
     
       
         // require_once('vendor/autoload.php');
@@ -330,9 +424,11 @@ class DeviceController extends Controller
             if ($jsonData === null) {
               // Error handling if JSON decoding fails
               echo "Failed to decode JSON data.";
-            } else {
+            } 
+            else {
               // Process the decoded JSON data
               try {
+                if($type=="companysearch"){
                 foreach ($jsonData as $data) {
                     $companyId = $data->companyId;
                     $companyName = $data->companyName;
@@ -353,10 +449,43 @@ class DeviceController extends Controller
                     $companyLead->is_active = 1;
         
                     $companyLead->save();
+                }}
+                if($type=="peoplesearch"){
+                    foreach ($jsonData as $record) {
+                        
+                        
+                        if (!isset($record->companyId) || !isset($record->regularCompanyUrl)) {
+                            continue; // Skip this record if companyId or regularCompanyUrl is missing
+                        }
+                        $peopleLead = new people_leads();
+                
+                      
+                        $peopleLead->full_name = $record->fullName;
+                        $peopleLead->company_name = $record->companyName;
+                        $peopleLead->company_id = $record->companyId;
+                        $peopleLead->regular_company_url = $record->regularCompanyUrl;
+                        $peopleLead->title = $record->title;
+                        $peopleLead->mail = isset($record->mail) ? $record->mail : null;
+                        $peopleLead->person_url = $record->profileUrl;
+                        $peopleLead->connection_degree = $record->connectionDegree;
+                        $peopleLead->company_location = $record->companyLocation;
+                        $peopleLead->person_location = $record->location;
+                        $peopleLead->search_id = $search_id; // Change this value to the appropriate search ID
+                        $peopleLead->created_at = now();
+                        $peopleLead->updated_at = now();
+                        $peopleLead->is_active = 1;
+                
+                        $peopleLead->save();
+                }
+                
+            }
+                else{
+                    echo "No data found";
                 }
         
                 echo "Data inserted successfully!";
-            } catch (Exception $e) {
+            } 
+            catch (Exception $e) {
                 echo "Error: " . $e->getMessage();
             }
             }
@@ -364,19 +493,5 @@ class DeviceController extends Controller
 
         
     }  
-
-    public function download(){
-        
-    }
-
-    
-    // Example usage
-    // $key = '056OL29RRtKkfikDIAslL7lytVsODwK3Z5xLsoTDy7Q';
-    // $id = '864520330260797';
-    // $name = 'Proudly';
-    // $address = 'https://www.linkedin.com/sales/search/company?query=(filters%3AList((type%3AANNUAL_REVENUE%2CrangeValue%3A(min%3A1%2Cmax%3A100)%2CselectedSubFilter%3AUSD)%2C(type%3ACOMPANY_HEADCOUNT%2Cvalues%3AList((id%3AD%2Ctext%3A51-200%2CselectionType%3AINCLUDED)))))&sessionId=LFGMh86aSfic4RnHsrulRQ%3D%3D&viewAllFilters=true';
-    
-    // updateAndLaunch($address, $id, $name, $key);
-    
 
 }
