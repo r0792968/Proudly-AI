@@ -65,7 +65,7 @@ class DeviceController extends Controller
 
     public function getIndustryNames()
     {
-        $data = filter_industries::all('industry_name');
+        $data = filter_industries::all('industry_name', 'ID');
         return response()->json($data);
     }
     public function getHeadcount()
