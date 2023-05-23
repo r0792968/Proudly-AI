@@ -9,7 +9,7 @@ use App\Models\filter_industries;
 use App\Models\filter_headcount;
 use App\Models\filter_headquarter_location;
 use App\Models\filter_seniority;
-use App\Models\filter_function; 
+use App\Models\filter_function;
 use App\Models\people_search;
 use App\Models\people_leads;
 use App\Models\company_search;
@@ -26,7 +26,7 @@ class DeviceController extends Controller
 
         $mail = $request->header('mail'); // Accessing the 'email' header
         $password = $request->header('password'); // Accessing the 'password' header
-    
+
         if (!$mail || !$password) {
             // If header parameters are not provided, check query parameters
             $mail = $request->query('mail');
@@ -37,7 +37,7 @@ class DeviceController extends Controller
                      ->where('password', $password)
                      ->where('is_active', 1)
                      ->first();
-    
+
         if ($data) {
             return response()->json($data);
         } else {
@@ -55,11 +55,11 @@ class DeviceController extends Controller
         }
         if ($name) {
             $data = filter_industries::where('industry_name', $name)->where('is_active', 1)->select('ID')->first();
-        } 
+        }
         else {
             $data = filter_industries::all('ID');
         }
-    
+
         return response()->json($data);
     }
 
@@ -68,7 +68,11 @@ class DeviceController extends Controller
         $data = filter_industries::all('industry_name');
         return response()->json($data);
     }
-   
+    public function getHeadcount()
+    {
+        $data = filter_headcount::all('headcount_interval');
+        return response()->json($data);
+    }
 
     public function getIdByHeadcount(Request $request)
     {
@@ -79,18 +83,25 @@ class DeviceController extends Controller
         }
         if ($interval) {
             $data = filter_headcount::where('headcount_interval', $interval)->where('is_active', 1)->select('ID')->first();
-        } 
+        }
         else {
             $data = filter_headcount::all('ID');
         }
-    
+
         return response()->json($data);
-    
-    
-       
-    
-       
+
+
+
+
+
     }
+
+    public function getHeadquarters()
+    {
+        $data = filter_headquarter_location::all('industry_name');
+        return response()->json($data);
+    }
+
     public function getIdByHeadquarters(Request $request)
     {
         $name = $request->header('name'); // Accessing the 'name' header
@@ -100,14 +111,14 @@ class DeviceController extends Controller
         }
         if ($name) {
             $data = filter_headquarter_location::where('industry_name', $name)->where('is_active', 1)->select('ID')->first();
-        } 
+        }
         else {
             $data = filter_headquarter_location::all('ID');
         }
-    
+
         return response()->json($data);
     }
-   
+
 
     public function getIdBySeniority(request $request)
     {
@@ -118,14 +129,14 @@ class DeviceController extends Controller
         }
         if ($name) {
             $data = filter_seniority::where('seniority_name', $name)->where('is_active', 1)->select('ID')->first();
-        } 
+        }
         else {
             $data = filter_seniority::all('ID');
         }
-    
+
         return response()->json($data);
     }
-   
+
     public function getIdByFunction(Request $request)
     {
         $name = $request->header('name'); // Accessing the 'name' header
@@ -135,15 +146,15 @@ class DeviceController extends Controller
         }
         if ($name) {
             $data = filter_function::where('function_name', $name)->where('is_active', 1)->select('ID')->first();
-        } 
+        }
         else {
             $data = filter_function::all('ID');
         }
-    
+
         return response()->json($data);
     }
 
-    
+
     public function getCompanySearchByUserId(request $request)
     {
         $user_id = $request->header('user_id'); // Accessing the 'user_id' header
@@ -156,15 +167,15 @@ class DeviceController extends Controller
             if($data->isEmpty()) {
                 $data = "user not found";
             }
-        } 
+        }
         else{
             $data = "user not found";
         }
-    
-       
+
+
         return response()->json($data);
     }
-    
+
     public function getCompanyLeadsBySearchId(request $request)
     {
         $search_id = $request->header('search_id'); // Accessing the 'search_id' header
@@ -177,14 +188,14 @@ class DeviceController extends Controller
             if($data->isEmpty()) {
                 $data = "search not found";
             }
-        } 
+        }
         else{
             $data = "search not found";
         }
-    
+
         return response()->json($data);
     }
-   
+
     public function getPeopleSearchByUserId(request $request){
         $user_id = $request->header('user_id'); // Accessing the 'user_id' header
         if (!$user_id) {
@@ -197,11 +208,11 @@ class DeviceController extends Controller
             if($data->isEmpty()) {
                 $data = "user not found";
             }
-        } 
+        }
         else{
             $data = "user not found";
         }
-    
+
         return response()->json($data);
     }
 
@@ -216,25 +227,25 @@ class DeviceController extends Controller
             if($data->isEmpty()) {
                 $data = "search not found";
             }
-        } 
+        }
         else{
             $data = "search not found";
         }
-    
+
         return response()->json($data);
     }
 
     // POST REQUESTS
-  
+
 
     public function newCompanyLeads(Request $request){
-        
+
         $search_id = $request->header('search_id');
         $name = $request->header('name');
         $company_url = $request->header('company_url');
         $description = $request->header('description');
         $company_id = $request->header('company_id');
-        
+
         $headcount = $request->header('headcount');
 
         $data = new company_leads;
@@ -243,24 +254,24 @@ class DeviceController extends Controller
         $data->company_url = $company_url;
         $data->description = $description;
         $data->company_id = $company_id;
-        
+
         $data->headcount = $headcount;
         $data->created_at = now();
         $data->updated_at = now();
         $data->is_active = 1;
         $data->save();
-    
+
         return response()->json(['message' => 'Data added successfully']);
     }
 
     public function newPeopleLeads(Request $request){
-            
+
             $full_name = $request->header('full_name');
             $company_name = $request->header('company_name');
             $company_id = $request->header('company_id');
             $regular_company_url = $request->header('regular_company_url');
-            
-            
+
+
             $title = $request->header('title');
             $mail = $request->header('mail');
             $person_url = $request->header('person_url');
@@ -268,8 +279,8 @@ class DeviceController extends Controller
             $company_location = $request->header('company_location');
             $person_location = $request->header('person_location');
             $search_id = $request->header('search_id');
-            
-    
+
+
             $data = new people_leads;
             $data->search_id = $search_id;
             $data->company_name = $company_name;
@@ -285,19 +296,19 @@ class DeviceController extends Controller
             $data->created_at = now();
             $data->updated_at = now();
             $data->is_active = 1;
-          
+
             $data->save();
-    
+
         return response()->json(['message' => 'Data added successfully']);
     }
    public function postUser(Request $request){
-        
+
         $username = $request->header('username');
         $mail = $request->header('mail');
         $password = $request->header('password');
-    
+
         $data = new users;
-        
+
         $data->username = $username;
         $data->mail = $mail;
         $data->password = hash("sha256",$password);
@@ -308,19 +319,19 @@ class DeviceController extends Controller
 
 
         $data->save();
-    
+
         return response()->json(['message' => 'Data added successfully']);
     }
     public function newCompanySearch(Request $request){
-        
+
         $user_id = $request->header('user_id');
         $anual_revenue = $request->header('anual_revenue');
         $headcount = $request->header('headcount');
         $industry = $request->header('industry');
         $geography = $request->header('geography');
-    
+
         $data = new company_search;
-        
+
         $data->user_id = $user_id;
         $data->anual_revenue = $anual_revenue;
         $data->headcount = $headcount;
@@ -331,12 +342,12 @@ class DeviceController extends Controller
         $data->is_active = 1;
 
         $data->save();
-    
+
         return response()->json(['message' => 'Data added successfully']);
     }
     public function newPeopleSearch(Request $request){
         $user_id = $request->header('user_id');
-       
+
         $job_function = $request->header('function');
         $job_seniority = $request->header('seniority');
         $current_company = $request->header('current_company');
@@ -350,7 +361,7 @@ class DeviceController extends Controller
         $data->updated_at = now();
         $data->is_active = 1;
         $data->save();
-    
+
         return response()->json(['message' => 'Data added successfully']);
 
     }
@@ -358,10 +369,10 @@ class DeviceController extends Controller
     //phantom Buster requests
 
     function updateAndLaunch(Request $request) {
-       
+
         $address = $request->header('address');
-        
-       
+
+
 
         $ch = curl_init();
 
@@ -383,15 +394,15 @@ class DeviceController extends Controller
 
 
     }
-    
-    
+
+
     // Fetcher function
     function fetcher(Request $request) {
-        
+
        $search_id = $request->header('search_id');
        $type = $request->header('type');
-    
-      
+
+
         // require_once('vendor/autoload.php');
 
         $client = new \GuzzleHttp\Client();
@@ -408,11 +419,11 @@ class DeviceController extends Controller
         // Store the s3Folder and orgs3Folder values in variables
         $s3Folder = $responseBody['s3Folder'];
         $orgs3Folder = $responseBody['orgS3Folder'];
-        
+
         // You can do further processing or return the values as needed
-        
+
         $url = "https://phantombuster.s3.amazonaws.com/{$orgs3Folder}/{$s3Folder}/result.json";
-  
+
         $data = file_get_contents($url);
 
         if ($data === false) {
@@ -420,11 +431,11 @@ class DeviceController extends Controller
             echo "Failed to fetch data from the URL.";
           } else {
             $jsonData = json_decode($data);
-        
+
             if ($jsonData === null) {
               // Error handling if JSON decoding fails
               echo "Failed to decode JSON data.";
-            } 
+            }
             else {
               // Process the decoded JSON data
               try {
@@ -435,8 +446,8 @@ class DeviceController extends Controller
                     $description = $data->description;
                     $companyUrl = $data->companyUrl;
                     $headcount = $data->employeeCountRange;
-                    
-        
+
+
                     $companyLead = new company_leads();
                     $companyLead->company_id = $companyId;
                     $companyLead->name = $companyName;
@@ -447,19 +458,19 @@ class DeviceController extends Controller
                     $companyLead->created_at = now();
                     $companyLead->updated_at = now();
                     $companyLead->is_active = 1;
-        
+
                     $companyLead->save();
                 }}
                 if($type=="peoplesearch"){
                     foreach ($jsonData as $record) {
-                        
-                        
+
+
                         if (!isset($record->companyId) || !isset($record->regularCompanyUrl)) {
                             continue; // Skip this record if companyId or regularCompanyUrl is missing
                         }
                         $peopleLead = new people_leads();
-                
-                      
+
+
                         $peopleLead->full_name = $record->fullName;
                         $peopleLead->company_name = $record->companyName;
                         $peopleLead->company_id = $record->companyId;
@@ -474,24 +485,24 @@ class DeviceController extends Controller
                         $peopleLead->created_at = now();
                         $peopleLead->updated_at = now();
                         $peopleLead->is_active = 1;
-                
+
                         $peopleLead->save();
                 }
-                
+
             }
                 else{
                     echo "No data found";
                 }
-        
+
                 echo "Data inserted successfully!";
-            } 
+            }
             catch (Exception $e) {
                 echo "Error: " . $e->getMessage();
             }
             }
           }
 
-        
-    }  
+
+    }
 
 }

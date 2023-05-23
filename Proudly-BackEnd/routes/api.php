@@ -31,12 +31,15 @@ Route::get('getIdByIndustry', [DeviceController::class, 'getIdByIndustry']);
 Route::get('getIdByHeadcount', [DeviceController::class, 'getIdByHeadcount']);
 Route::get('getIdByHeadquarters', [DeviceController::class, 'getIdByHeadquarters']);
 Route::get('getIdBySeniority', [DeviceController::class, 'getIdBySeniority']);
-Route::get('getIdByFunction', [DeviceController::class, 'getIdByFunction']);  
+Route::get('getIdByFunction', [DeviceController::class, 'getIdByFunction']);
 Route::get('getCompanySearchByUserId', [DeviceController::class, 'getCompanySearchByUserId']);
 Route::get('getPeopleSearchByUserId', [DeviceController::class, 'getPeopleSearchByUserId']);
 Route::get('getCompanyLeadsBySearchId', [DeviceController::class, 'getCompanyLeadsBySearchId']);
 Route::get('getPeopleLeadsBySearchId', [DeviceController::class, 'getPeopleLeadsBySearchId']);
 Route::get('getIndustryNames', [DeviceController::class, 'getIndustryNames']);
+Route::get('getHeadcount', [DeviceController::class, 'getHeadcount']);
+Route::get('getHeadquarters', [DeviceController::class, 'getHeadquarters']);
+
 
 
 //POST REQUESTS
