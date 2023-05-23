@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     signup(){
-      fetch('http://127.0.0.1:8000/api/user/postUser?username='+this.username+'+&mail='+this.mail+'+&password='+this.password, {method: "POST"})
+      fetch(process.env.VUE_APP_ROOT_API+'user/postUser?username='+this.username+'+&mail='+this.mail+'+&password='+this.password, {method: "POST"})
               .then(response => response.json())
               .then(response => console.log(response))
 

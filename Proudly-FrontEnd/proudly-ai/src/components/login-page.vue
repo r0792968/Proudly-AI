@@ -34,7 +34,7 @@ export default {
         this.$router.push('/Signup');
     },
     login () {
-      fetch('http://127.0.0.1:8000/api/user/getUser/'+this.mail+'/'+this.password)
+      fetch(process.env.VUE_APP_ROOT_API+'user/getUser/'+this.mail+'/'+this.password)
         .then(response => response.json())
         .then(response => {
           console.log(response);

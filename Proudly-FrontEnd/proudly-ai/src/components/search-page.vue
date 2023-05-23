@@ -1,37 +1,16 @@
 <template>
   <div>
-    <input type="text" v-model="searchText" placeholder="Search">
-    <button @click="redirectToResults">Search</button>
+    <button @click="linkConstructor">Search</button><br>
 
-    <select v-model="Industry">
-      <option v-for="industry in this.Industries" value="Industry">{{industry.industry_name}}</option>
+    <select v-model="Industry" id="Industry" @change="logSelectedValue($event.target.value, 'Industry')">
+      <option v-for="industry in this.Industries" :value="industry.industry_name" >{{industry.industry_name}}</option>
+    </select><br>
+    <select v-model="Headcount" id="Headcount" @change="logSelectedValue($event.target.value, 'Headcount')">
+      <option v-for="intervals in this.HeadcountIntervals" :value="intervals.headcount_interval" >{{intervals.headcount_interval}}</option>
+    </select><br>
+    <select v-model="HeadQuarters" id="Headquarter" @change="logSelectedValue($event.target.value, 'Headquarter')">
+      <option v-for="hq in this.places" :value="hq.industry_name" >{{hq.industry_name}}</option>
     </select>
-    <select v-model="Headcount">
-      <option value="filter1">1-10</option>
-      <option value="filter1">11-50</option>
-      <option value="filter1">51-200</option>
-      <option value="filter1">201-500</option>
-      <option value="filter1">501-1000</option>
-      <option value="filter1">1001-5000</option>
-      <option value="filter1">5001-10000</option>
-      <option value="filter1">10001+</option>
-    </select>
-    <select v-model="HeadQuarters">
-      <option value="filter1">APAC</option>
-      <option value="filter1">APJ</option>
-      <option value="filter1">Benelux</option>
-      <option value="filter1">DACH</option>
-      <option value="filter1">EMEA</option>
-      <option value="filter1">MENA</option>
-      <option value="filter1">Nordics</option>
-      <option value="filter1">Oceania</option>
-      <option value="filter1">Europe</option>
-      <option value="filter1">North America</option>
-      <option value="filter1">Asia</option>
-      <option value="filter1">Africa</option>
-      <option value="filter1">South America</option>
-    </select>
-
   </div>
 </template>
 
@@ -42,19 +21,33 @@ export default {
       msg: String
   },
   mounted(){
-    fetch('http://127.0.0.1:8000/api/filter/getIndustryNames/')
+    fetch(process.env.VUE_APP_ROOT_API+'filter/getIndustryNames/')
       .then(response => response.json())
       .then(data => {
       const dataaray = data
       this.Industries = dataaray
-      console.log(this.Industries)
+    })
+    fetch(process.env.VUE_APP_ROOT_API+'filter/getHeadcount/')
+      .then(response => response.json())
+      .then(data => {
+      const dataaray = data
+      this.HeadcountIntervals = dataaray
+    })
+    fetch(process.env.VUE_APP_ROOT_API+'filter/getHeadquarters/')
+      .then(response => response.json())
+      .then(data => {
+      const dataaray = data
+      this.places = dataaray
     })
   },
   data() {
     return {
-      searchText: '',
-      Filter1: 'filter1',
-      Industries: []
+      WantedIndustry: document.getElementById('Industry'),
+      WantedHeadcount: document.getElementById('Headcount'),
+      WantedHeadquarter: document.getElementById('Headquarter'),
+      Industries: [],
+      HeadcountIntervals: [],
+      places: []
 
     };
   },
@@ -68,9 +61,48 @@ export default {
     },
   methods: {
     redirectToResults() {
-    //   const query = ;
       this.$router.push({ path: '/Result', query });
+    },
+    logSelectedValue(value, field) {
+      switch (field) {
+        case 'Industry':
+          this.WantedIndustry = value;
+          console.log('Selected Industry:', value);
+          break;
+        case 'Headcount':
+          this.WantedHeadcount = value;
+          console.log('Selected Headcount:', value);
+          break;
+        case 'Headquarter':
+          this.WantedHeadquarter = value;
+          console.log('Selected Headquarter:', value);
+          break;
+        default:
+          break;
+      }
+    },
+    linkConstructor() {
+
+      fetch(process.env.VUE_APP_ROOT_API+'filter/getIdByIndustry/'+this.WantedIndustry)
+        .then(response => response.json())
+        .then(response => {
+          let IndustryID = response.ID
+        })
+        .then(fetch(process.env.VUE_APP_ROOT_API+'filter/getIdByHeadQuarters/'+this.WantedHeadquarter))
+          .then(response => response.json())
+          .then(response =>{
+            let HQID = response.ID
+          })
+          .then(fetch(process.env.VUE_APP_ROOT_API+'filter/getIdByHeadcount/'+this.WantedHeadcount))
+            .then(response => response.json())
+            .then(response => {
+              let HeadCountID = response.ID
+            })
+
+
     }
   }
-};
+
+}
+
 </script>
