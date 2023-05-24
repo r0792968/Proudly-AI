@@ -1,0 +1,1 @@
+const API_key =  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
