@@ -1,16 +1,16 @@
 <template>
   <div>
-    <button @click="linkConstructor">Search</button><br>
 
-    <select v-model="Industry" id="Industry" @change="logSelectedValue($event.target.value, 'Industry')">
-      <option v-for="industry in this.Industries" :value="industry.industry_name" >{{industry.industry_name}}</option>
+    <select v-model="selectedIndustryID">
+      <option v-for="industry in this.Industries" :value="industry.ID">{{industry.industry_name}}</option>
     </select><br>
-    <select v-model="Headcount" id="Headcount" @change="logSelectedValue($event.target.value, 'Headcount')">
-      <option v-for="intervals in this.HeadcountIntervals" :value="intervals.headcount_interval" >{{intervals.headcount_interval}}</option>
+    <select v-model="selectedHeadcount">
+      <option v-for="intervals in this.HeadcountIntervals" >{{intervals.headcount_interval}}</option>
     </select><br>
-    <select v-model="HeadQuarters" id="Headquarter" @change="logSelectedValue($event.target.value, 'Headquarter')">
-      <option v-for="hq in this.places" :value="hq.industry_name" >{{hq.industry_name}}</option>
-    </select>
+    <select v-model="selectedHQ">
+      <option v-for="hq in this.Places">{{hq.industry_name}}</option>
+    </select><br>
+    <button @click="linkConstructor">Search</button>
   </div>
 </template>
 
@@ -21,33 +21,34 @@ export default {
       msg: String
   },
   mounted(){
-    fetch(process.env.VUE_APP_ROOT_API+'filter/getIndustryNames/')
+    fetch(process.env.VUE_APP_ROOT_API+'company/filter/allindustries')
       .then(response => response.json())
       .then(data => {
       const dataaray = data
       this.Industries = dataaray
     })
-    fetch(process.env.VUE_APP_ROOT_API+'filter/getHeadcount/')
+    fetch(process.env.VUE_APP_ROOT_API+'company/filter/allheadcounts')
       .then(response => response.json())
       .then(data => {
       const dataaray = data
       this.HeadcountIntervals = dataaray
     })
-    fetch(process.env.VUE_APP_ROOT_API+'filter/getHeadquarters/')
+    fetch(process.env.VUE_APP_ROOT_API+'company/filter/allheadquarters')
       .then(response => response.json())
       .then(data => {
       const dataaray = data
-      this.places = dataaray
+      this.Places = dataaray
     })
   },
   data() {
     return {
-      WantedIndustry: document.getElementById('Industry'),
-      WantedHeadcount: document.getElementById('Headcount'),
-      WantedHeadquarter: document.getElementById('Headquarter'),
       Industries: [],
       HeadcountIntervals: [],
-      places: []
+      Places: [],
+      selectedIndustryID: null,
+      selectedHeadcount: null,
+      selectedHQ: null,
+      link: "https://www.linkedin.com/sales/search/company?"
 
     };
   },
@@ -63,43 +64,28 @@ export default {
     redirectToResults() {
       this.$router.push({ path: '/Result', query });
     },
-    logSelectedValue(value, field) {
-      switch (field) {
-        case 'Industry':
-          this.WantedIndustry = value;
-          console.log('Selected Industry:', value);
-          break;
-        case 'Headcount':
-          this.WantedHeadcount = value;
-          console.log('Selected Headcount:', value);
-          break;
-        case 'Headquarter':
-          this.WantedHeadquarter = value;
-          console.log('Selected Headquarter:', value);
-          break;
-        default:
-          break;
-      }
-    },
     linkConstructor() {
+      this.link += "industry=" + this.selectedIndustryID
 
-      fetch(process.env.VUE_APP_ROOT_API+'filter/getIdByIndustry/'+this.WantedIndustry)
+      fetch(process.env.VUE_APP_ROOT_API+"company/filter/headquarters",{
+          headers: {
+            'name': this.selectedHQ
+          }})
         .then(response => response.json())
         .then(response => {
-          let IndustryID = response.ID
+          this.link += "&geoIncluded="
+          this.link += response.ID
         })
-        .then(fetch(process.env.VUE_APP_ROOT_API+'filter/getIdByHeadQuarters/'+this.WantedHeadquarter))
+        fetch(process.env.VUE_APP_ROOT_API+"company/filter/headcount",{
+          headers: {
+            'interval': this.selectedHeadcount
+          }})
           .then(response => response.json())
-          .then(response =>{
-            let HQID = response.ID
+          .then(response => {
+          this.link += "&companySize="
+          this.link += response.ID
+          console.log(this.link)
           })
-          .then(fetch(process.env.VUE_APP_ROOT_API+'filter/getIdByHeadcount/'+this.WantedHeadcount))
-            .then(response => response.json())
-            .then(response => {
-              let HeadCountID = response.ID
-            })
-
-
     }
   }
 
