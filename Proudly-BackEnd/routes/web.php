@@ -19,3 +19,5 @@ Route::get('/', function () {
 Route::get('/dbconn', function () {
     return view('db_conn');
 });
+Route::post('/webhook', 'WebhookController@handle');
+Route::get('/webhook', 'WebhookController@verify');

@@ -379,7 +379,7 @@ class DeviceController extends Controller
         curl_setopt($ch, CURLOPT_URL, 'https://api.phantombuster.com/api/v2/agents/launch');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, '{"id":"5249917770822739","argument":{"numberOfProfiles":100,"extractDefaultUrl":false,"removeDuplicateProfiles":false,"sessionCookie":"AQEDAT6-TWYAqrPSAAABh9uuqxoAAAGIWDO98E4AMFKgSw_eYf8gpTxIO4bs1YwEXCsHS-uMKoYB6p_-gdZh4SjGofqGMPtXySDW0mR7TkMy_Az6xr_JZN_7Ap5LIROL37MyyN4vOHPTYg1WcJ_O6rz9","searches":"' . $address . '"}}');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, '{"id":"5249917770822739","argument":{"numberOfProfiles":100,"extractDefaultUrl":false,"removeDuplicateProfiles":false,"sessionCookie":"AQEDATA3wxABdl0-AAABiGx9LIsAAAGIkImwi04AVzuGOsXLRtVw1kf4d-04DH2GLfYOXzRxBo5HulFrQVsBS74RCATsoRr_tpu9-lEVfk8VoLiV7NAG8_L0oG5mC4Vs6yFU4yTN2Rv62fYICPIRyuNt","searches":"' . $address . '"}}');
 
         $headers = array();
         $headers[] = 'Content-Type: application/json';
