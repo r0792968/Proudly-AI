@@ -345,7 +345,7 @@ class DeviceController extends Controller
 
         $primary_key = $data->getKey();
 
-        return response()->json(['primary_key' => $primary_key]);
+        return response()->json(['company_search' => $primary_key]);
     }
     public function newPeopleSearch(Request $request){
         $user_id = $request->header('user_id');
@@ -364,7 +364,9 @@ class DeviceController extends Controller
         $data->is_active = 1;
         $data->save();
 
-        return response()->json(['message' => 'Data added successfully']);
+        $primary_key = $data->getKey();
+
+        return response()->json(['people_search_key' => $primary_key]);
 
     }
 
