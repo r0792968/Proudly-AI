@@ -6,7 +6,7 @@
 #######################################################################################
 
 # Example shared files and folders:
-# shared_files: [ etc/config.yml ]
+shared_files: [ .env ]
 # shared_folders: [ var/log ]
 
 # Hooks should be Bash shell scripts and get executed at different stages during deploy
