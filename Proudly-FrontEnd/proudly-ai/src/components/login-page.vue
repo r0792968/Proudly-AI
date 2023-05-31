@@ -34,12 +34,17 @@ export default {
         this.$router.push('/Signup');
     },
     login () {
-      fetch(process.env.VUE_APP_ROOT_API+'user/getUser/'+this.mail+'/'+this.password)
+      fetch(process.env.VUE_APP_ROOT_API+'user',{
+          headers: {
+            'mail': this.mail,
+            'password' : this.password
+          }})
         .then(response => response.json())
         .then(response => {
           console.log(response);
           if (response !== 'user not found') {
             sessionStorage.setItem('LoggedInStatus', true);
+            sessionStorage.setItem('user_id',response.id)
             this.$router.push('/dashboard');
           } else {
             alert("Wrong credentials");
